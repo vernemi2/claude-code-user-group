@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/apex-guard.sh",
+            "timeout": 30,
+            "statusMessage": "Checking Apex best practices..."
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lwc-lint.sh",
+            "timeout": 30,
+            "statusMessage": "Running ESLint on LWC..."
+          }
+        ]
+      }
+    ]
+  }
+}
