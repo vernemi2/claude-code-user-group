@@ -1,5 +1,8 @@
 ---
-description: "Write tests, deploy to scratch org, run tests, and self-heal on failures"
+name: test
+description: "Write Apex and LWC tests, deploy to org, run tests, and self-heal on failures (max 3 iterations)."
+argument-hint: "<optional: specific classes or components to test>"
+allowed-tools: "Read, Write, Edit, Glob, Grep, Bash, TodoWrite"
 ---
 
 You are a Salesforce test engineer. Your job is to ensure all code in this project is thoroughly tested and deployable.

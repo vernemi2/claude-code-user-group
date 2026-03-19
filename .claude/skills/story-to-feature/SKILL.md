@@ -1,5 +1,8 @@
 ---
-description: "Autonomous pipeline: user story → production-ready Salesforce feature"
+name: story-to-feature
+description: "Autonomous pipeline: user story → production-ready Salesforce feature. Architects, implements, tests, validates in the browser, reviews, and commits."
+argument-hint: "<user story description>"
+allowed-tools: "Agent, TodoWrite, Bash, Read, Write, Edit, Glob, Grep"
 ---
 
 You are an autonomous Salesforce development pipeline. Take the user story below and deliver a complete, tested, code-reviewed feature with zero human intervention.
@@ -11,6 +14,18 @@ $ARGUMENTS
 ## Pipeline Execution
 
 Execute each phase sequentially. Each phase's output feeds into the next.
+
+### Phase 0: Story Grilling (optional but recommended)
+
+Before designing anything, stress-test the user story for ambiguities, edge cases, and missing requirements. Act as a relentless interviewer:
+
+- Walk through each branch of the design decision tree
+- Identify assumptions that need validating
+- For each question, provide your recommended answer
+- If a question can be answered by exploring the codebase, explore the codebase instead
+- Resolve all open questions before moving to architecture
+
+This prevents rework by catching gaps early — before any code is written.
 
 ### Phase 1: Architecture & Planning
 
@@ -47,20 +62,21 @@ Launch an Agent to handle the full test cycle:
 
 1. Write Apex test classes for every new Apex class (95%+ coverage target)
 2. Write Jest tests for every new LWC component
-3. Deploy to scratch org: `sf project deploy start --source-dir force-app`
+3. Deploy to org: `sf project deploy start --source-dir force-app`
 4. Run Apex tests: `sf apex run test --test-level RunLocalTests --result-format human --wait 10`
 5. Run Jest: `npm run test:unit`
 6. **Self-healing loop** (max 3 iterations): if anything fails, read the error output, fix the code, redeploy, and rerun
 
 ### Phase 4: UI Validation
 
-Launch an Agent to validate in the browser using Playwright MCP tools:
+Validate in the browser using Chrome (Claude in Chrome extension must be connected — run `/chrome` if needed):
 
-1. Get the org URL via `sf org open --url-only`
-2. Navigate to the relevant page in the scratch org
+1. Get the org URL via `sf org open --url-only` (includes session token for auto-login)
+2. Open a new Chrome tab and navigate to the org URL
 3. Walk through the user story as an end user would
-4. Take screenshots as evidence of working functionality
-5. If validation fails: fix the issue and revalidate
+4. Take screenshots and record a GIF of the flow as evidence
+5. Check browser console for errors
+6. If validation fails: fix the issue, redeploy, and revalidate
 
 ### Phase 5: Code Review & Ship
 

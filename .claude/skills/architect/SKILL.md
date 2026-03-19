@@ -1,5 +1,10 @@
 ---
-description: "Analyze a user story and design the Salesforce solution architecture"
+name: architect
+description: "Analyze a user story and design the Salesforce solution architecture — data model, Apex layers, LWC components, and implementation plan."
+argument-hint: "<user story description>"
+context: fork
+agent: Plan
+allowed-tools: "Read, Glob, Grep, Bash"
 ---
 
 You are a Salesforce solution architect. Analyze the user story below and produce a complete technical design.

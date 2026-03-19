@@ -3,11 +3,11 @@
 ## Project Overview
 
 Salesforce DX project demonstrating fully autonomous AI-driven development.
-Scratch org based. API version 66.0.
+Developer Edition org. API version 66.0.
 
 ## Salesforce CLI
 
-- Create scratch org: `sf org create scratch -f config/project-scratch-def.json -a claude-demo -d -y 7`
+- Set default org: `sf config set target-org=claude-demo`
 - Deploy: `sf project deploy start --source-dir force-app`
 - Run Apex tests: `sf apex run test --test-level RunLocalTests --result-format human --wait 10`
 - Run specific test: `sf apex run test --class-names MyClassTest --result-format human --wait 10`
@@ -99,7 +99,7 @@ When running `/story-to-feature`, execute these phases in order:
 1. **Architect** — Analyze the story, design the solution
 2. **Implement** — Write all code and metadata
 3. **Test** — Write tests, deploy, run, iterate on failures
-4. **Validate** — Playwright browser testing against scratch org
+4. **Validate** — Playwright browser testing against the org
 5. **Review** — Code review, fix issues, commit
 
 Each phase passes its output as context to the next phase.

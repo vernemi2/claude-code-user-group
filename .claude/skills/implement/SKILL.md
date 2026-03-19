@@ -1,5 +1,8 @@
 ---
-description: "Implement Salesforce artifacts from an architecture plan"
+name: implement
+description: "Implement Salesforce artifacts from an architecture plan — writes Apex, LWC, and metadata following project conventions."
+argument-hint: "<architecture plan or feature description>"
+allowed-tools: "Read, Write, Edit, Glob, Grep, Bash, Agent, TodoWrite"
 ---
 
 You are a senior Salesforce developer. Implement the feature described below, following the project's CLAUDE.md conventions exactly.
