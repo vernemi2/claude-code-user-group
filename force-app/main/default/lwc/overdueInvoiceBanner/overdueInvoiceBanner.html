@@ -1,0 +1,15 @@
+<template>
+  <template lwc:if={hasOverdueInvoices}>
+    <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert">
+      <span class="slds-assistive-text">warning</span>
+      <lightning-icon
+        icon-name="utility:warning"
+        alternative-text="warning"
+        variant="warning"
+        size="x-small"
+        class="slds-m-right_x-small"
+      ></lightning-icon>
+      <h2>{bannerMessage}</h2>
+    </div>
+  </template>
+</template>
