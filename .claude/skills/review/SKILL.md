@@ -17,7 +17,6 @@ If no specific scope is given, review all files in `force-app/main/default/`.
 ## Review Checklist
 
 ### Apex — Security
-- [ ] All SOQL uses `WITH SECURITY_ENFORCED`
 - [ ] No hardcoded record IDs
 - [ ] No sensitive data in debug logs
 
@@ -28,16 +27,21 @@ If no specific scope is given, review all files in `force-app/main/default/`.
 - [ ] No unnecessary queries (could use fields already in memory)
 
 ### Apex — Architecture
-- [ ] One trigger per object, delegates to handler
+- [ ] One trigger per object, extends `TriggerHandler`
 - [ ] Business logic in service classes, not triggers/handlers
-- [ ] SOQL queries in selector classes
+- [ ] No static methods on services/handlers — instance-based, resolved via `InstanceProvider.provide()`
+- [ ] All SOQL via SOQL Lib fluent API — no raw SOQL strings
+- [ ] Queries in `SOQL_{Object}` selector classes
+- [ ] All DML via DML Lib fluent API — no raw `insert`/`update`/`delete`
 - [ ] Methods are focused and single-purpose
 
 ### Apex — Testing
 - [ ] Every class has a test class
-- [ ] Tests use `@TestSetup`
+- [ ] Tests mock all dependencies (SOQL.mock, DML.mock, InstanceProvider.injectMock + UniversalMocker)
+- [ ] No `@TestSetup` — all data constructed in-memory
 - [ ] Tests cover positive, negative, bulk, and edge cases
 - [ ] Tests use `Assert` class with descriptive messages
+- [ ] Tests verify interactions via `UniversalMocker.assertThat()`
 - [ ] No `@SeeAllData=true`
 
 ### LWC — Best Practices

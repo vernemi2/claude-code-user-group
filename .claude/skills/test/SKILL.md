@@ -18,15 +18,21 @@ For every Apex class in `force-app/main/default/classes/` that doesn't have a co
 
 1. Create `{ClassName}Test.cls` in the same directory
 2. Include `@IsTest` annotation on the class
-3. Add `@TestSetup` method to create shared test data
-4. Write test methods covering:
+3. **Mock all dependencies — never hit the database:**
+   - Mock SOQL queries: `SOQL.mock('mockId').thenReturn(records)`
+   - Mock DML operations: `DML.mock('mockId').allInserts()` / `.allUpdates()`
+   - Mock class dependencies: `UniversalMocker.mock(ServiceClass.class)` + `InstanceProvider.injectMock()`
+4. **Never use `@TestSetup`** — construct all SObjects in-memory
+5. Write test methods covering:
    - **Positive**: happy path with valid data
    - **Negative**: invalid inputs, missing required fields, exception handling
    - **Bulk**: 200+ records to verify governor limit safety
    - **Edge cases**: null values, empty lists, boundary conditions
-5. Use `Test.startTest()` / `Test.stopTest()` around the operation under test
-6. Use `Assert.areEqual()`, `Assert.isTrue()`, `Assert.isNotNull()` with descriptive messages
-7. Target **95%+ code coverage** per class
+6. Name tests descriptively: `shouldDoXWhenY`, `shouldThrowWhenInvalidInput`
+7. Use `Test.startTest()` / `Test.stopTest()` around the operation under test
+8. Use `Assert.areEqual()`, `Assert.isTrue()`, `Assert.isNotNull()` with descriptive messages
+9. Verify interactions: `mockInstance.assertThat().method('name').wasCalled(n)`
+10. Target **95%+ code coverage** per class
 
 ### LWC Jest Tests
 For every LWC component without tests:

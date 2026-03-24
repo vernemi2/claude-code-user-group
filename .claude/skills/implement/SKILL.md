@@ -14,13 +14,14 @@ $ARGUMENTS
 ## Implementation Rules
 
 ### Apex
-- One trigger per object → delegates to handler class
-- Business logic in service classes (stateless, static methods)
-- SOQL in selector classes only
+- One trigger per object → extends `TriggerHandler`, delegates to service classes
+- Services are instance-based (no static methods), resolved via `InstanceProvider.provide()`
+- All SOQL via SOQL Lib fluent API — never raw SOQL strings. Use `SOQL_{Object}` selectors.
+- All DML via DML Lib fluent API — never raw `insert`/`update`/`delete`. Use `new DML().toInsert()...commitWork()`.
 - No SOQL/DML in loops
 - All code must be bulk-safe (handle 200+ records)
-- Use `WITH SECURITY_ENFORCED` on all SOQL
 - No hardcoded IDs
+- Tag queries with `.mockId()` and DML with `.mockId()` for test mocking
 - Use `Assert` class in tests (not `System.assert`)
 
 ### LWC

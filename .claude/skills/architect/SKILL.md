@@ -22,7 +22,7 @@ $ARGUMENTS
    - Apex triggers (one per object, following trigger handler pattern)
    - Apex handler classes
    - Apex service classes (business logic)
-   - Apex selector classes (SOQL queries)
+   - Apex SOQL Lib selectors (`SOQL_{Object}` classes for queries)
    - LWC components
    - Permission sets
    - Page layouts and Lightning pages (flexipages)
@@ -37,8 +37,9 @@ $ARGUMENTS
 
 5. **Design the Apex architecture** — specify:
    - Trigger events needed (before/after insert/update/delete)
-   - Service method signatures
-   - Selector method signatures
+   - Service classes (instance-based, resolved via InstanceProvider)
+   - SOQL Lib selectors (`SOQL_{Object}` classes)
+   - DML Lib usage for database operations
    - How data flows between layers
 
 6. **Output a structured plan** as a numbered task list, ordered by dependency:
