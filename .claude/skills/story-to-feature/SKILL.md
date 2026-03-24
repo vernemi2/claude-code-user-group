@@ -15,7 +15,17 @@ $ARGUMENTS
 
 Execute each phase sequentially. Each phase's output feeds into the next.
 
-### Phase 0: Story Grilling (optional but recommended)
+### Phase 0: Feature Branch
+
+Create a feature branch from `main` before any work begins:
+
+1. Ensure working tree is clean (`git status`). If not, stop and inform the user.
+2. Fetch latest: `git fetch origin main`
+3. Create and checkout a feature branch: `git checkout -b feature/<short-kebab-description> origin/main`
+   - Derive the branch name from the user story (e.g., `feature/overdue-invoice-banner`, `feature/account-contact-validation`)
+   - Keep it short, lowercase, kebab-case
+
+### Phase 1: Story Grilling (optional but recommended)
 
 Before designing anything, stress-test the user story for ambiguities, edge cases, and missing requirements. Act as a relentless interviewer:
 
@@ -27,7 +37,7 @@ Before designing anything, stress-test the user story for ambiguities, edge case
 
 This prevents rework by catching gaps early — before any code is written.
 
-### Phase 1: Architecture & Planning
+### Phase 2: Architecture & Planning
 
 Launch an Agent (subagent_type: "Plan") to analyze the user story and design the solution:
 
@@ -39,7 +49,7 @@ Launch an Agent (subagent_type: "Plan") to analyze the user story and design the
 
 After the agent returns, create a TodoWrite task list from the plan.
 
-### Phase 2: Implementation
+### Phase 3: Implementation
 
 Execute the implementation plan. Use parallel Agent calls where tasks are independent:
 
@@ -56,7 +66,7 @@ Execute the implementation plan. Use parallel Agent calls where tasks are indepe
 
 Each agent must follow CLAUDE.md conventions strictly. Mark each task complete as you finish it.
 
-### Phase 3: Testing
+### Phase 4: Testing
 
 Launch an Agent to handle the full test cycle:
 
@@ -67,7 +77,7 @@ Launch an Agent to handle the full test cycle:
 5. Run Jest: `npm run test:unit`
 6. **Self-healing loop** (max 3 iterations): if anything fails, read the error output, fix the code, redeploy, and rerun
 
-### Phase 4: UI Validation
+### Phase 5: UI Validation
 
 Validate in the browser using Chrome (Claude in Chrome extension must be connected — run `/chrome` if needed):
 
@@ -78,7 +88,7 @@ Validate in the browser using Chrome (Claude in Chrome extension must be connect
 5. Check browser console for errors
 6. If validation fails: fix the issue, redeploy, and revalidate
 
-### Phase 5: Code Review & Ship
+### Phase 6: Code Review & Ship
 
 Launch an Agent to review and finalize:
 
@@ -86,12 +96,14 @@ Launch an Agent to review and finalize:
    - SOQL/DML in loops
    - Missing bulk handling
    - Hardcoded IDs
-   - Missing FLS enforcement (WITH SECURITY_ENFORCED)
+   - Raw SOQL/DML instead of SOQL Lib / DML Lib
+   - Static methods instead of InstanceProvider
    - Test coverage gaps
    - LWC best practices
 2. Fix any issues found
 3. Run `npm run prettier` to format everything
 4. Create a descriptive git commit
+5. Push the feature branch and open a PR against `main`
 
 ## Rules
 
