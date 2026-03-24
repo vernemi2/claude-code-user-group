@@ -3,6 +3,21 @@
     {
       "path": "force-app",
       "default": true
+    },
+    {
+      "path": "libs/trigger-framework"
+    },
+    {
+      "path": "libs/universal-mocker"
+    },
+    {
+      "path": "libs/instance-provider"
+    },
+    {
+      "path": "libs/soql-lib"
+    },
+    {
+      "path": "libs/dml-lib"
     }
   ],
   "name": "claude-code-user-group",
