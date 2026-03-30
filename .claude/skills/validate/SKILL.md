@@ -37,6 +37,7 @@ $ARGUMENTS
 ## Handling Failures
 
 If the UI validation reveals issues:
+
 1. Document what you expected vs. what happened
 2. Take a screenshot of the failure
 3. Fix the underlying code (Apex, LWC, or metadata)
@@ -46,6 +47,7 @@ If the UI validation reveals issues:
 ## Output
 
 Provide a summary:
+
 - Steps performed
 - Screenshots/GIFs captured
 - Pass/fail status for each validation step

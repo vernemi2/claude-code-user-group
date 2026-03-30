@@ -54,12 +54,14 @@ After the agent returns, create a TodoWrite task list from the plan.
 Execute the implementation plan. Use parallel Agent calls where tasks are independent:
 
 **Metadata first** (if custom objects/fields are needed):
+
 - Custom objects and fields (XML metadata)
 - Permission sets
 - Layouts and flexipages
 - Tabs
 
 **Then code** (can parallelize across layers):
+
 - Agent 1: Apex triggers + handler classes
 - Agent 2: Apex service + selector classes
 - Agent 3: LWC components (JS + HTML + CSS + XML meta)

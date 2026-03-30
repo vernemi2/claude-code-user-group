@@ -63,15 +63,17 @@ Business logic lives in `{Feature}Service.cls` classes. **No static methods** �
 
 ```apex
 public class AccountService {
-    private final AccountSelector selector;
+  private final AccountSelector selector;
 
-    public AccountService() {
-        this.selector = (AccountSelector) InstanceProvider.provide(AccountSelector.class);
-    }
+  public AccountService() {
+    this.selector = (AccountSelector) InstanceProvider.provide(
+      AccountSelector.class
+    );
+  }
 
-    public List<Account> getByIndustry(String industry) {
-        return SOQL_Account.query().byIndustry(industry).toList();
-    }
+  public List<Account> getByIndustry(String industry) {
+    return SOQL_Account.query().byIndustry(industry).toList();
+  }
 }
 ```
 
@@ -83,17 +85,19 @@ All SOQL queries use the [SOQL Lib](https://soql.beyondthecloud.dev/) fluent API
 
 ```apex
 public inherited sharing class SOQL_Account extends SOQL implements SOQL.Selector {
-    public static SOQL_Account query() { return new SOQL_Account(); }
+  public static SOQL_Account query() {
+    return new SOQL_Account();
+  }
 
-    private SOQL_Account() {
-        super(Account.SObjectType);
-        with(Account.Id, Account.Name).systemMode().withoutSharing();
-    }
+  private SOQL_Account() {
+    super(Account.SObjectType);
+    with(Account.Id, Account.Name).systemMode().withoutSharing();
+  }
 
-    public SOQL_Account byIndustry(String industry) {
-        whereAre(Filter.with(Account.Industry).equal(industry));
-        return this;
-    }
+  public SOQL_Account byIndustry(String industry) {
+    whereAre(Filter.with(Account.Industry).equal(industry));
+    return this;
+  }
 }
 ```
 
@@ -184,11 +188,11 @@ InstanceProvider.injectMock(PaymentService.class, mockStub);
 
 **Mocking strategy** — every dependency is mocked at its boundary:
 
-| Layer | Tool | What it mocks |
-|---|---|---|
-| SOQL queries | `SOQL.mock('id').thenReturn(records)` | Query results — no database read |
-| DML operations | `DML.mock('id').allInserts()` | Database writes — no DML executed |
-| Class dependencies | `InstanceProvider.injectMock()` + `UniversalMocker` | Service/selector instances |
+| Layer              | Tool                                                | What it mocks                     |
+| ------------------ | --------------------------------------------------- | --------------------------------- |
+| SOQL queries       | `SOQL.mock('id').thenReturn(records)`               | Query results — no database read  |
+| DML operations     | `DML.mock('id').allInserts()`                       | Database writes — no DML executed |
+| Class dependencies | `InstanceProvider.injectMock()` + `UniversalMocker` | Service/selector instances        |
 
 ```apex
 @IsTest
@@ -213,6 +217,7 @@ static void shouldCalculateTotalFromLineItems() {
 ```
 
 **Test guidelines:**
+
 - One concern per test method — test a single behavior, not an entire flow
 - Name tests descriptively: `shouldDoXWhenY`, `shouldThrowWhenInvalidInput`
 - Construct SObjects in-memory — `new Account(Name = 'Test')` without insert
