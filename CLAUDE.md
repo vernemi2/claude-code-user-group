@@ -14,6 +14,14 @@ Developer Edition org. API version 66.0.
 - Open org: `sf org open`
 - Open specific page: `sf org open -p "/lightning/o/Account/list"`
 
+## Deployment Checklist
+
+When creating new custom objects or fields:
+
+1. **Permission sets** — Add all new objects and fields to the relevant permission set (Read/Create/Edit/Delete on objects, Read/Edit on fields). Without this, fields are invisible even to admins.
+2. **Assign permission set** — After deploying, assign the permission set to the current user: `sf org assign permset --name PermSetName`
+3. **Flexipage activation** — Deploying a flexipage does NOT activate it. After deploying, activate it as the org default via Setup > Lightning App Builder, or through the browser.
+
 ## Code Quality Tools
 
 - ESLint: `npm run lint`
@@ -230,6 +238,11 @@ static void shouldCalculateTotalFromLineItems() {
 - Test file: `{componentName}/__tests__/{componentName}.test.js`
 - Mock wire adapters and Apex calls
 - Test rendering, user interactions, and error states
+- Use `flushPromises` from the shared `c/testUtils` service component to await async re-renders:
+  ```javascript
+  import { flushPromises } from "c/testUtils";
+  ```
+  Do NOT define `flushPromises` inline in test files — always import from `c/testUtils`.
 
 ## Project Structure
 

@@ -2,6 +2,7 @@ import { createElement } from "lwc";
 import OverdueInvoiceBanner from "c/overdueInvoiceBanner";
 import { getRecord } from "lightning/uiRecordApi";
 import getOverdueInvoiceSummary from "@salesforce/apex/OverdueInvoiceController.getOverdueInvoiceSummary";
+import { flushPromises } from "c/testUtils";
 
 jest.mock(
   "@salesforce/apex/OverdueInvoiceController.getOverdueInvoiceSummary",
@@ -11,9 +12,6 @@ jest.mock(
   },
   { virtual: true }
 );
-
-// eslint-disable-next-line @lwc/lwc/no-async-operation
-const flushPromises = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 describe("c-overdue-invoice-banner", () => {
   afterEach(() => {
