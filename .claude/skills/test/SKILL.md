@@ -14,6 +14,7 @@ $ARGUMENTS
 ## Test Writing Phase
 
 ### Apex Test Classes
+
 For every Apex class in `force-app/main/default/classes/` that doesn't have a corresponding test:
 
 1. Create `{ClassName}Test.cls` in the same directory
@@ -35,6 +36,7 @@ For every Apex class in `force-app/main/default/classes/` that doesn't have a co
 10. Target **95%+ code coverage** per class
 
 ### LWC Jest Tests
+
 For every LWC component without tests:
 
 1. Create `__tests__/{componentName}.test.js`
@@ -54,6 +56,7 @@ Execute these steps sequentially:
 ## Self-Healing Loop
 
 Maximum 3 iterations. For each failure:
+
 1. Read the full error message
 2. Identify root cause (test logic error vs. actual bug vs. deployment issue)
 3. Fix the appropriate file

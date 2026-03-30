@@ -48,25 +48,25 @@ Opportunity when the Account has overdue invoices
 
 ## How It Works
 
-| Layer | What | Why |
-|---|---|---|
-| `CLAUDE.md` | Project brain | Coding standards, Apex patterns, SF CLI commands — Claude follows these autonomously |
-| `.claude/skills/` | Specialized agents | Each pipeline phase is a skill with focused instructions |
-| `.claude/hooks/` | Automated guardrails | Post-edit hooks catch Apex anti-patterns and lint LWC in real-time |
-| `.claude/settings.json` | Hook configuration | Wires guardrails to file edit events |
-| Chrome extension | UI validation | Claude controls a real Chrome browser to test the feature end-to-end |
+| Layer                   | What                 | Why                                                                                  |
+| ----------------------- | -------------------- | ------------------------------------------------------------------------------------ |
+| `CLAUDE.md`             | Project brain        | Coding standards, Apex patterns, SF CLI commands — Claude follows these autonomously |
+| `.claude/skills/`       | Specialized agents   | Each pipeline phase is a skill with focused instructions                             |
+| `.claude/hooks/`        | Automated guardrails | Post-edit hooks catch Apex anti-patterns and lint LWC in real-time                   |
+| `.claude/settings.json` | Hook configuration   | Wires guardrails to file edit events                                                 |
+| Chrome extension        | UI validation        | Claude controls a real Chrome browser to test the feature end-to-end                 |
 
 ## Skills
 
-| Skill | Description |
-|---|---|
-| `/story-to-feature` | Master orchestrator — runs the full pipeline end-to-end |
-| `/grill-me` | Relentlessly interviews you about a plan until every decision branch is resolved |
-| `/architect` | Analyzes a user story and designs the Salesforce solution |
-| `/implement` | Writes all Apex, LWC, and metadata from an architecture plan |
-| `/test` | Writes tests, deploys, runs them, self-heals up to 3 iterations |
-| `/validate` | Navigates Salesforce in Chrome to verify the feature works |
-| `/review` | Reviews code against best practices, fixes issues, commits |
+| Skill               | Description                                                                      |
+| ------------------- | -------------------------------------------------------------------------------- |
+| `/story-to-feature` | Master orchestrator — runs the full pipeline end-to-end                          |
+| `/grill-me`         | Relentlessly interviews you about a plan until every decision branch is resolved |
+| `/architect`        | Analyzes a user story and designs the Salesforce solution                        |
+| `/implement`        | Writes all Apex, LWC, and metadata from an architecture plan                     |
+| `/test`             | Writes tests, deploys, runs them, self-heals up to 3 iterations                  |
+| `/validate`         | Navigates Salesforce in Chrome to verify the feature works                       |
+| `/review`           | Reviews code against best practices, fixes issues, commits                       |
 
 ## Prerequisites
 

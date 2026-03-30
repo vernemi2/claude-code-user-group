@@ -14,6 +14,7 @@ $ARGUMENTS
 ## Implementation Rules
 
 ### Apex
+
 - One trigger per object → extends `TriggerHandler`, delegates to service classes
 - Services are instance-based (no static methods), resolved via `InstanceProvider.provide()`
 - All SOQL via SOQL Lib fluent API — never raw SOQL strings. Use `SOQL_{Object}` selectors.
@@ -25,6 +26,7 @@ $ARGUMENTS
 - Use `Assert` class in tests (not `System.assert`)
 
 ### LWC
+
 - Use `@wire` for reactive data
 - Use `lightning-record-*` base components where possible
 - Import Apex with `@salesforce/apex/{ClassName}.{methodName}`
@@ -32,11 +34,13 @@ $ARGUMENTS
 - Include XML metadata file with correct targets and visibility
 
 ### Metadata
+
 - Custom fields: include field XML with description, type, length, required flag
 - Permission sets: grant access to new objects and fields
 - Flexipages: create Lightning record pages that include new components
 
 ### Process
+
 1. Create a task list with TodoWrite
 2. Implement each artifact, marking tasks complete as you go
 3. Use parallel Agent calls for independent work (e.g., Apex service + LWC component simultaneously)
