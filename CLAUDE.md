@@ -8,7 +8,9 @@ Developer Edition org. API version 66.0.
 ## Salesforce CLI
 
 - Set default org: `sf config set target-org=claude-demo`
-- Deploy: `sf project deploy start --source-dir force-app`
+- Deploy source: `sf project deploy start --source-dir force-app/main`
+- Deploy tests: `sf project deploy start --source-dir force-app/test`
+- Deploy all: `sf project deploy start --source-dir force-app/main --source-dir force-app/test`
 - Run Apex tests: `sf apex run test --test-level RunLocalTests --result-format human --wait 10`
 - Run specific test: `sf apex run test --class-names MyClassTest --result-format human --wait 10`
 - Open org: `sf org open`
@@ -247,15 +249,23 @@ static void shouldCalculateTotalFromLineItems() {
 ## Project Structure
 
 ```
-force-app/main/default/          # Project code
-├── classes/                     # Apex classes + test classes
-├── triggers/                    # One trigger per object
-├── lwc/                         # Lightning Web Components
-├── objects/                     # Custom objects and fields
-├── permissionsets/              # Permission sets
-├── layouts/                     # Page layouts
-├── flexipages/                  # Lightning record/app pages
-└── tabs/                        # Custom tabs
+force-app/
+├── main/                        # Source code (default package directory)
+│   ├── classes/                  # Apex classes (services, controllers)
+│   │   └── selectors/           # SOQL_{Object}.cls selector classes
+│   ├── triggers/                # One trigger per object
+│   ├── lwc/                     # Lightning Web Components
+│   ├── objects/                 # Custom objects and fields
+│   ├── permissionsets/          # Permission sets
+│   ├── layouts/                 # Page layouts
+│   ├── flexipages/              # Lightning record/app pages
+│   └── tabs/                    # Custom tabs
+└── test/                        # Test code (separate package directory)
+    └── classes/                 # Apex test classes
+        └── selectors/           # SOQL_{Object}Test.cls selector tests
+
+jest-utils/                      # Shared Jest test utilities (not deployed to org)
+└── testUtils/testUtils.js       # flushPromises and other helpers
 
 libs/                            # Third-party libraries (separate package directories)
 ├── trigger-framework/classes/   # Trigger handler base class
