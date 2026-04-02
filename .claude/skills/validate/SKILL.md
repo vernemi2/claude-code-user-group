@@ -41,7 +41,7 @@ If the UI validation reveals issues:
 1. Document what you expected vs. what happened
 2. Take a screenshot of the failure
 3. Fix the underlying code (Apex, LWC, or metadata)
-4. Redeploy: `sf project deploy start --source-dir force-app`
+4. Redeploy: `sf project deploy start --source-dir force-app/main --source-dir force-app/test`
 5. Refresh the browser tab and revalidate (max 3 attempts)
 
 ## Output

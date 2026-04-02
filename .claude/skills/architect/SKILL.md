@@ -15,7 +15,7 @@ $ARGUMENTS
 
 ## Your Task
 
-1. **Read the existing codebase** — scan `force-app/main/default/` to understand what objects, classes, components, and metadata already exist. Don't design something that duplicates existing functionality.
+1. **Read the existing codebase** — scan `force-app/main/` to understand what objects, classes, components, and metadata already exist. Don't design something that duplicates existing functionality.
 
 2. **Identify Salesforce artifacts** needed:
    - Custom objects and custom fields (on standard or custom objects)

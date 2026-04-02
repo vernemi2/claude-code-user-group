@@ -42,7 +42,7 @@ This prevents rework by catching gaps early — before any code is written.
 Launch an Agent (subagent_type: "Plan") to analyze the user story and design the solution:
 
 - Identify all Salesforce artifacts needed (objects, fields, triggers, services, selectors, LWC components, permissions, layouts, flexipages)
-- Read existing code in force-app/ to understand what already exists
+- Read existing code in force-app/main/ to understand what already exists
 - Design the technical approach following CLAUDE.md conventions (trigger handler pattern, service layer, selector pattern)
 - Output a structured architecture document listing every file to create/modify with its purpose
 - Break the implementation into ordered tasks with dependencies
@@ -74,7 +74,7 @@ Launch an Agent to handle the full test cycle:
 
 1. Write Apex test classes for every new Apex class (95%+ coverage target)
 2. Write Jest tests for every new LWC component
-3. Deploy to org: `sf project deploy start --source-dir force-app`
+3. Deploy to org: `sf project deploy start --source-dir force-app/main --source-dir force-app/test`
 4. Run Apex tests: `sf apex run test --test-level RunLocalTests --result-format human --wait 10`
 5. Run Jest: `npm run test:unit`
 6. **Self-healing loop** (max 3 iterations): if anything fails, read the error output, fix the code, redeploy, and rerun

@@ -12,7 +12,7 @@ You are a senior Salesforce code reviewer. Review all changes in this project ag
 
 $ARGUMENTS
 
-If no specific scope is given, review all files in `force-app/main/default/`.
+If no specific scope is given, review all files in `force-app/main/` and `force-app/test/`.
 
 ## Review Checklist
 
@@ -73,7 +73,7 @@ After all fixes:
 
 1. Run `npm run prettier`
 2. Run `npm run lint`
-3. Verify the build still deploys: `sf project deploy start --source-dir force-app --dry-run`
+3. Verify the build still deploys: `sf project deploy start --source-dir force-app/main --source-dir force-app/test --dry-run`
 
 ## Output
 

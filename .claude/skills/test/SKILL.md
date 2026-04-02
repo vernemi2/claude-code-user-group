@@ -15,7 +15,7 @@ $ARGUMENTS
 
 ### Apex Test Classes
 
-For every Apex class in `force-app/main/default/classes/` that doesn't have a corresponding test:
+For every Apex class in `force-app/main/classes/` (and `force-app/main/classes/selectors/`) that doesn't have a corresponding test:
 
 1. Create `{ClassName}Test.cls` in the same directory
 2. Include `@IsTest` annotation on the class
@@ -47,7 +47,7 @@ For every LWC component without tests:
 
 Execute these steps sequentially:
 
-1. `sf project deploy start --source-dir force-app` — deploy all code
+1. `sf project deploy start --source-dir force-app/main --source-dir force-app/test` — deploy all code
 2. If deploy fails: read errors, fix the code, redeploy (max 3 attempts)
 3. `sf apex run test --test-level RunLocalTests --result-format human --wait 10` — run Apex tests
 4. `npm run test:unit` — run Jest tests

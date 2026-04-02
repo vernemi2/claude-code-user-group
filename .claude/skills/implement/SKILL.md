@@ -2,6 +2,7 @@
 name: implement
 description: "Implement Salesforce artifacts from an architecture plan — writes Apex, LWC, and metadata following project conventions."
 argument-hint: "<architecture plan or feature description>"
+context: fork
 allowed-tools: "Read, Write, Edit, Glob, Grep, Bash, Agent, TodoWrite"
 ---
 
