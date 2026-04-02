@@ -251,8 +251,11 @@ static void shouldCalculateTotalFromLineItems() {
 ```
 force-app/
 ├── main/                        # Source code (default package directory)
-│   ├── classes/                  # Apex classes (services, controllers)
-│   │   └── selectors/           # SOQL_{Object}.cls selector classes
+│   ├── classes/                  # Apex classes
+│   │   ├── controllers/         # Apex controllers (@AuraEnabled)
+│   │   ├── handlers/            # Trigger handler classes
+│   │   ├── selectors/           # SOQL_{Object}.cls selector classes
+│   │   └── services/            # Business logic service classes
 │   ├── triggers/                # One trigger per object
 │   ├── lwc/                     # Lightning Web Components
 │   ├── objects/                 # Custom objects and fields
@@ -262,7 +265,10 @@ force-app/
 │   └── tabs/                    # Custom tabs
 └── test/                        # Test code (separate package directory)
     └── classes/                 # Apex test classes
-        └── selectors/           # SOQL_{Object}Test.cls selector tests
+        ├── controllers/         # Controller test classes
+        ├── handlers/            # Trigger handler test classes
+        ├── selectors/           # SOQL_{Object}Test.cls selector tests
+        └── services/            # Service test classes
 
 jest-utils/                      # Shared Jest test utilities (not deployed to org)
 └── testUtils/testUtils.js       # flushPromises and other helpers
