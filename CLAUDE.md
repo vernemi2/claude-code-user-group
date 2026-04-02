@@ -253,6 +253,7 @@ force-app/
 ├── main/                        # Source code (default package directory)
 │   ├── classes/                  # Apex classes
 │   │   ├── controllers/         # Apex controllers (@AuraEnabled)
+│   │   ├── handlers/            # Trigger handler classes
 │   │   ├── selectors/           # SOQL_{Object}.cls selector classes
 │   │   └── services/            # Business logic service classes
 │   ├── triggers/                # One trigger per object
@@ -265,6 +266,7 @@ force-app/
 └── test/                        # Test code (separate package directory)
     └── classes/                 # Apex test classes
         ├── controllers/         # Controller test classes
+        ├── handlers/            # Trigger handler test classes
         ├── selectors/           # SOQL_{Object}Test.cls selector tests
         └── services/            # Service test classes
 
