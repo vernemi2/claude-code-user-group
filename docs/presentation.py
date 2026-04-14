@@ -130,7 +130,7 @@ def add_phase_card(slide, left, top, width, number, title, subtitle, color):
                  font_size=20, color=WHITE, bold=True)
     add_text_box(slide, left + Inches(1.0), top + Inches(0.6),
                  width - Inches(1.3), Inches(0.5), subtitle,
-                 font_size=14, color=MID_GRAY)
+                 font_size=16, color=MID_GRAY)
 
 
 # ─── SLIDE 1: Title ──────────────────────────────────────────────────
@@ -191,14 +191,16 @@ add_card(slide, Inches(0.5), Inches(2.0), Inches(3.9), Inches(4.5))
 add_text_box(slide, Inches(0.8), Inches(2.1), Inches(3.3), Inches(0.5),
              "A", font_size=32, color=ACCENT_BLUE, bold=True)
 add_text_box(slide, Inches(1.3), Inches(2.15), Inches(2.8), Inches(0.5),
-             "Invoice Payment Logging", font_size=22, color=WHITE, bold=True)
-add_bullet_list(slide, Inches(0.8), Inches(2.8), Inches(3.3), Inches(3.5),
-                ["Payment__c object (child of Invoice)",
-                 "Auto-update status to Paid",
-                 "Revert on payment delete",
-                 "Validation rules",
-                 "LWC payment form + history"],
-                font_size=16, color=LIGHT_GRAY, bullet_color=ACCENT_BLUE)
+             "Invoice Aging", font_size=22, color=WHITE, bold=True)
+add_text_box(slide, Inches(0.8), Inches(3.0), Inches(3.3), Inches(1.5),
+             "As an account manager, I want to "
+             "see an aging breakdown of unpaid "
+             "invoices (Current, 1-30, 31-60, "
+             "61-90, 90+ days overdue) on the "
+             "Account page, so I can prioritize "
+             "collections and assess credit risk "
+             "at a glance.",
+             font_size=16, color=MID_GRAY)
 
 # Card 2
 add_card(slide, Inches(4.7), Inches(2.0), Inches(3.9), Inches(4.5))
@@ -206,27 +208,29 @@ add_text_box(slide, Inches(5.0), Inches(2.1), Inches(3.3), Inches(0.5),
              "B", font_size=32, color=ACCENT_GREEN, bold=True)
 add_text_box(slide, Inches(5.5), Inches(2.15), Inches(2.8), Inches(0.5),
              "Invoice Line Items", font_size=22, color=WHITE, bold=True)
-add_bullet_list(slide, Inches(5.0), Inches(2.8), Inches(3.3), Inches(3.5),
-                ["InvoiceLineItem__c object",
-                 "Product, Quantity, Unit Price",
-                 "Roll-up to Invoice Amount",
-                 "Inline editing LWC",
-                 "Auto-recalculation trigger"],
-                font_size=16, color=LIGHT_GRAY, bullet_color=ACCENT_GREEN)
+add_text_box(slide, Inches(5.0), Inches(3.0), Inches(3.3), Inches(1.5),
+             "As a sales rep, I want to add line "
+             "items to an invoice with product, "
+             "quantity, and unit price, and have "
+             "the invoice amount auto-calculate "
+             "from the total, so that invoices "
+             "are always accurate.",
+             font_size=16, color=MID_GRAY)
 
 # Card 3
 add_card(slide, Inches(8.9), Inches(2.0), Inches(3.9), Inches(4.5))
 add_text_box(slide, Inches(9.2), Inches(2.1), Inches(3.3), Inches(0.5),
              "C", font_size=32, color=ACCENT_PURPLE, bold=True)
 add_text_box(slide, Inches(9.7), Inches(2.15), Inches(2.8), Inches(0.5),
-             "Account Invoice Dashboard", font_size=22, color=WHITE, bold=True)
-add_bullet_list(slide, Inches(9.2), Inches(2.8), Inches(3.3), Inches(3.5),
-                ["LWC on Account page",
-                 "Invoice counts by status",
-                 "Total outstanding amount",
-                 "Recent invoices table",
-                 "Visual status indicators"],
-                font_size=16, color=LIGHT_GRAY, bullet_color=ACCENT_PURPLE)
+             "Invoice Dashboard", font_size=22, color=WHITE, bold=True)
+add_text_box(slide, Inches(9.2), Inches(3.0), Inches(3.3), Inches(1.5),
+             "As an account manager, I want to "
+             "see a dashboard on the Account page "
+             "showing invoice counts by status, "
+             "total outstanding amount, and recent "
+             "invoices, so I can assess a customer's "
+             "financial health at a glance.",
+             font_size=16, color=MID_GRAY)
 
 
 # ─── SLIDE 4: Starting the Agent ─────────────────────────────────────
@@ -293,24 +297,16 @@ add_text_box(slide, Inches(0.5), Inches(0.4), Inches(11), Inches(0.8),
 
 add_card_with_title(slide, Inches(0.5), Inches(1.8), Inches(3.8), Inches(5.2),
                     "Consistency", [
-                        "Every query uses the same",
-                        "fluent API pattern",
-                        "",
-                        "AI learns ONE pattern,",
-                        "applies it everywhere",
-                        "",
+                        "Every query uses the same fluent API pattern",
+                        "AI learns ONE pattern, applies it everywhere",
                         "No variation = fewer bugs",
                     ], accent=ACCENT_BLUE, font_size=16)
 
 add_card_with_title(slide, Inches(4.7), Inches(1.8), Inches(3.8), Inches(5.2),
                     "Mockability", [
-                        "Every dependency can be",
-                        "mocked at the boundary",
-                        "",
+                        "Every dependency can be mocked at the boundary",
                         "Zero database hits in tests",
-                        "",
-                        "AI can write tests without",
-                        "org state dependencies",
+                        "AI can write tests without org state dependencies",
                     ], accent=ACCENT_GREEN, font_size=16)
 
 add_card_with_title(slide, Inches(8.9), Inches(1.8), Inches(3.8), Inches(5.2),
@@ -318,9 +314,7 @@ add_card_with_title(slide, Inches(8.9), Inches(1.8), Inches(3.8), Inches(5.2),
                         "Hard rules the AI can follow:",
                         "\"Never write raw SOQL\"",
                         "\"Never use raw DML\"",
-                        "",
-                        "Libraries enforce patterns",
-                        "that prevent bad code",
+                        "Libraries enforce patterns that prevent bad code",
                     ], accent=ACCENT_ORANGE, font_size=16)
 
 
@@ -381,8 +375,7 @@ code_text = (
     "\n"
     "  private SOQL_Account() {\n"
     "    super(Account.SObjectType);\n"
-    "    with(Account.Id, Account.Name)\n"
-    "      .systemMode().withoutSharing();\n"
+    "    with(Account.Id, Account.Name);\n"
     "  }\n"
     "\n"
     "  public SOQL_Account byIndustry(String v) {\n"
@@ -401,10 +394,8 @@ add_card_with_title(slide, Inches(6.9), Inches(1.6), Inches(5.9), Inches(5.4),
                         "Extend SOQL, implement SOQL.Selector",
                         "Static query() factory method",
                         "Default fields in constructor",
-                        "systemMode().withoutSharing()",
                         "Chainable filter methods",
                         "Return this for fluency",
-                        "",
                         "One example = every selector",
                         "the agent writes follows this pattern",
                     ], accent=ACCENT_ORANGE, font_size=17)
@@ -418,29 +409,24 @@ add_accent_bar(slide, Inches(0.5), ACCENT_PURPLE)
 add_text_box(slide, Inches(0.5), Inches(0.4), Inches(11), Inches(0.8),
              "   The Autonomous Pipeline", font_size=40, color=WHITE, bold=True)
 add_text_box(slide, Inches(0.5), Inches(1.1), Inches(11), Inches(0.5),
-             "   /story-to-feature \u2014 five phases, zero intervention",
+             "   /story-to-feature \u2014 six phases, zero intervention",
              font_size=20, color=MID_GRAY)
 
 phases = [
-    (1, "Architect", "Analyze story, design data model,\nplan all artifacts", ACCENT_BLUE),
-    (2, "Implement", "Write Apex, LWC, metadata\nfollowing CLAUDE.md conventions", ACCENT_GREEN),
-    (3, "Test", "Write tests, deploy, run, self-heal\non failures (max 3 iterations)", ACCENT_ORANGE),
-    (4, "Validate", "Browser automation \u2014 navigate UI,\ntake screenshots, verify flow", ACCENT_PURPLE),
-    (5, "Review & Ship", "Code review, format, commit,\npush, open PR", ACCENT_RED),
+    (0, "Grill", "Stress-test the story\nfor gaps & edge cases", RGBColor(0x00, 0xBC, 0xD4)),
+    (1, "Architect", "Design data model\nand plan all artifacts", ACCENT_BLUE),
+    (2, "Implement", "Write Apex, LWC,\nmetadata", ACCENT_GREEN),
+    (3, "Test", "Deploy, run, self-heal\n(max 3 iterations)", ACCENT_ORANGE),
+    (4, "Validate", "Browser automation\nvia Playwright", ACCENT_PURPLE),
+    (5, "Ship", "Review, commit,\npush, open PR", ACCENT_RED),
 ]
 
 for i, (num, title, desc, color) in enumerate(phases):
-    top = Inches(1.8) + Inches(1.1) * i
-    add_phase_card(slide, Inches(1.5), top, Inches(10), num, title, desc, color)
-
-# Arrow connectors between phases
-for i in range(4):
-    top = Inches(3.0) + Inches(1.1) * i
-    arrow = slide.shapes.add_shape(MSO_SHAPE.DOWN_ARROW,
-                                    Inches(6.4), top, Inches(0.3), Inches(0.15))
-    arrow.fill.solid()
-    arrow.fill.fore_color.rgb = MID_GRAY
-    arrow.line.fill.background()
+    col = i % 3
+    row = i // 3
+    left = Inches(0.5) + Inches(4.1) * col
+    top = Inches(1.8) + Inches(2.8) * row
+    add_phase_card(slide, left, top, Inches(3.8), num, title, desc, color)
 
 
 # ─── SLIDE 11: Skills Architecture ───────────────────────────────────
@@ -615,7 +601,7 @@ add_text_box(slide, Inches(1), Inches(5.0), Inches(11), Inches(0.5),
 
 
 # ─── Save ─────────────────────────────────────────────────────────────
-output = "/Users/michal/Documents/personal/salesforce/repos/claude-code-user-group/presentation.pptx"
+output = "/Users/michal/Documents/personal/salesforce/repos/claude-code-user-group/docs/presentation.pptx"
 prs.save(output)
 print(f"Saved to {output}")
 print(f"Total slides: {len(prs.slides)}")
