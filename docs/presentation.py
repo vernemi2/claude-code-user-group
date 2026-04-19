@@ -440,27 +440,39 @@ add_text_box(slide, Inches(0.5), Inches(1.2), Inches(11), Inches(0.5),
              "   Each skill is a prompt template that Claude Code can invoke",
              font_size=20, color=MID_GRAY)
 
-skills = [
+# Orchestrator banner
+orch_top = Inches(1.9)
+add_card(slide, Inches(0.5), orch_top, Inches(12.3), Inches(1.1))
+add_text_box(slide, Inches(0.8), orch_top + Inches(0.15), Inches(5.0), Inches(0.5),
+             "/story-to-feature", font_size=26, color=ACCENT_ORANGE, bold=True,
+             font_name="Consolas")
+add_text_box(slide, Inches(0.8), orch_top + Inches(0.65), Inches(11.5), Inches(0.45),
+             "Orchestrates all skills below in sequence \u2014 one command, full pipeline",
+             font_size=16, color=LIGHT_GRAY)
+
+# Six sub-skills in 2x3 grid
+sub_skills = [
+    ("/grill-me", "Self-grills the story\nfor gaps & edge cases", RGBColor(0x00, 0xBC, 0xD4)),
     ("/architect", "Designs the solution \u2014\ndata model, layers, plan", ACCENT_BLUE),
     ("/implement", "Writes all code following\nCLAUDE.md conventions", ACCENT_GREEN),
     ("/test", "Writes + runs tests,\nself-heals on failure", ACCENT_ORANGE),
     ("/validate", "Browser testing via\nPlaywright automation", ACCENT_PURPLE),
     ("/review", "Code review against\nbest practices", ACCENT_RED),
-    ("/story-to-feature", "Orchestrates all skills\nin sequence", RGBColor(0x00, 0xBC, 0xD4)),
 ]
 
-for i, (name, desc, color) in enumerate(skills):
+grid_top = Inches(3.3)
+for i, (name, desc, color) in enumerate(sub_skills):
     col = i % 3
     row = i // 3
     left = Inches(0.5) + Inches(4.1) * col
-    top = Inches(2.0) + Inches(2.6) * row
-    add_card(slide, left, top, Inches(3.8), Inches(2.3))
-    add_text_box(slide, left + Inches(0.3), top + Inches(0.3),
+    top = grid_top + Inches(2.0) * row
+    add_card(slide, left, top, Inches(3.8), Inches(1.8))
+    add_text_box(slide, left + Inches(0.3), top + Inches(0.2),
                  Inches(3.2), Inches(0.4), name,
-                 font_size=24, color=color, bold=True, font_name="Consolas")
-    add_text_box(slide, left + Inches(0.3), top + Inches(1.0),
-                 Inches(3.2), Inches(1.0), desc,
-                 font_size=16, color=LIGHT_GRAY)
+                 font_size=22, color=color, bold=True, font_name="Consolas")
+    add_text_box(slide, left + Inches(0.3), top + Inches(0.8),
+                 Inches(3.2), Inches(0.9), desc,
+                 font_size=14, color=LIGHT_GRAY)
 
 
 # ─── SLIDE 12: Self-Healing ──────────────────────────────────────────

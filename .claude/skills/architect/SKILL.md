@@ -4,7 +4,7 @@ description: "Analyze a user story and design the Salesforce solution architectu
 argument-hint: "<user story description>"
 context: fork
 agent: Plan
-allowed-tools: "Read, Glob, Grep, Bash"
+allowed-tools: Read Glob Grep Bash
 ---
 
 You are a Salesforce solution architect. Analyze the user story below and produce a complete technical design.

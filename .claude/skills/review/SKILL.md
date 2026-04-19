@@ -3,7 +3,7 @@ name: review
 description: "Code review all changes against Salesforce best practices and CLAUDE.md standards — security, performance, architecture, testing."
 argument-hint: "<optional: specific files or scope to review>"
 context: fork
-allowed-tools: "Read, Edit, Glob, Grep, Bash"
+allowed-tools: Read Edit Glob Grep Bash
 ---
 
 You are a senior Salesforce code reviewer. Review all changes in this project against best practices and the project's CLAUDE.md conventions.
