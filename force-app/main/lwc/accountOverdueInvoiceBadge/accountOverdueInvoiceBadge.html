@@ -1,0 +1,27 @@
+<template>
+  <button
+    type="button"
+    class="badge-button"
+    onclick={handleNavigate}
+    aria-label={ariaLabel}
+  >
+    <template lwc:if={isLoading}>
+      <lightning-badge label="Checking invoices…"></lightning-badge>
+    </template>
+    <template lwc:elseif={hasError}>
+      <lightning-badge
+        label="Invoice status unavailable"
+        icon-name="utility:warning"
+      ></lightning-badge>
+    </template>
+    <template lwc:elseif={hasOverdue}>
+      <lightning-badge
+        label={badgeLabel}
+        icon-name="utility:warning"
+      ></lightning-badge>
+    </template>
+    <template lwc:else>
+      <lightning-badge label="No overdue invoices"></lightning-badge>
+    </template>
+  </button>
+</template>
