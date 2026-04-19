@@ -3,7 +3,7 @@ name: grill-me
 description: "Self-grill a plan, design, or user story by walking the decision tree autonomously — ask yourself each question, answer it from the codebase or first principles, and resolve every branch before moving on."
 argument-hint: "<plan, design, or user story to stress-test>"
 context: fork
-allowed-tools: Read Glob Grep Bash
+allowed-tools: Read Write Glob Grep Bash
 ---
 
 Stress-test the input below by interviewing _yourself_ relentlessly. No human is in the loop — you ask the questions and you answer them, resolving every branch of the decision tree before declaring the design settled.
@@ -34,3 +34,14 @@ A numbered list of resolved decisions, each with:
 - The reasoning (codebase evidence or principle applied)
 
 End with a one-paragraph summary of the now-unambiguous user story / plan, ready to hand off to the architect.
+
+## Persist the artifact
+
+At the end of the run, write the full output to `docs/features/<slug>/01-grill.md`, where `<slug>` is derived from the current git branch:
+
+```bash
+SLUG=$(git rev-parse --abbrev-ref HEAD | sed 's|^feature/||')
+mkdir -p "docs/features/$SLUG"
+```
+
+Then write the grill output to `docs/features/$SLUG/01-grill.md`.

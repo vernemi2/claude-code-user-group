@@ -2,7 +2,7 @@
 name: validate
 description: "Validate the feature in the org using Playwright browser automation — navigates the Salesforce UI, tests the user story end-to-end, captures screenshots and console output."
 argument-hint: "<feature or user story to validate>"
-allowed-tools: Bash mcp__plugin_playwright_playwright__browser_navigate mcp__plugin_playwright_playwright__browser_snapshot mcp__plugin_playwright_playwright__browser_click mcp__plugin_playwright_playwright__browser_type mcp__plugin_playwright_playwright__browser_fill_form mcp__plugin_playwright_playwright__browser_select_option mcp__plugin_playwright_playwright__browser_press_key mcp__plugin_playwright_playwright__browser_hover mcp__plugin_playwright_playwright__browser_wait_for mcp__plugin_playwright_playwright__browser_take_screenshot mcp__plugin_playwright_playwright__browser_console_messages mcp__plugin_playwright_playwright__browser_network_requests mcp__plugin_playwright_playwright__browser_evaluate mcp__plugin_playwright_playwright__browser_tabs mcp__plugin_playwright_playwright__browser_close
+allowed-tools: Bash Write mcp__plugin_playwright_playwright__browser_navigate mcp__plugin_playwright_playwright__browser_snapshot mcp__plugin_playwright_playwright__browser_click mcp__plugin_playwright_playwright__browser_type mcp__plugin_playwright_playwright__browser_fill_form mcp__plugin_playwright_playwright__browser_select_option mcp__plugin_playwright_playwright__browser_press_key mcp__plugin_playwright_playwright__browser_hover mcp__plugin_playwright_playwright__browser_wait_for mcp__plugin_playwright_playwright__browser_take_screenshot mcp__plugin_playwright_playwright__browser_console_messages mcp__plugin_playwright_playwright__browser_network_requests mcp__plugin_playwright_playwright__browser_evaluate mcp__plugin_playwright_playwright__browser_tabs mcp__plugin_playwright_playwright__browser_close
 ---
 
 You are a QA engineer. Use the Playwright MCP browser tools to validate the implemented feature works in the Salesforce UI.
@@ -48,10 +48,23 @@ If validation reveals issues:
 
 Call `browser_close` when done so the Playwright browser instance is released.
 
+## Persist the artifact
+
+Write a summary to `docs/features/<slug>/04-validation.md` before calling `browser_close`:
+
+```bash
+SLUG=$(git rev-parse --abbrev-ref HEAD | sed 's|^feature/||')
+mkdir -p "docs/features/$SLUG"
+```
+
+Save screenshots to `docs/features/$SLUG/screenshots/` and reference them from the markdown.
+
 ## Output
 
+The `docs/features/$SLUG/04-validation.md` file should include:
+
 - Steps performed
-- Screenshots captured (list file paths)
+- Screenshots captured (list file paths under `screenshots/`)
 - Pass/fail status per step
 - Console / network errors observed
 - Any issues found and how they were resolved

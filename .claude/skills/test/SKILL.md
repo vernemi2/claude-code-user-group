@@ -63,3 +63,14 @@ Maximum 3 iterations. For each failure:
 4. Redeploy and rerun
 
 If still failing after 3 iterations: document the issue as a TODO comment in the test file and move on.
+
+## Persist the artifact
+
+At the end of the run, write a summary to `docs/features/<slug>/03-tests.md`:
+
+```bash
+SLUG=$(git rev-parse --abbrev-ref HEAD | sed 's|^feature/||')
+mkdir -p "docs/features/$SLUG"
+```
+
+Include in `docs/features/$SLUG/03-tests.md`: new test classes created, Apex pass/fail counts + coverage %, Jest pass/fail counts, number of self-heal cycles, and any remaining TODOs.

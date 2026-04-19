@@ -207,14 +207,15 @@ add_card(slide, Inches(4.7), Inches(2.0), Inches(3.9), Inches(4.5))
 add_text_box(slide, Inches(5.0), Inches(2.1), Inches(3.3), Inches(0.5),
              "B", font_size=32, color=ACCENT_GREEN, bold=True)
 add_text_box(slide, Inches(5.5), Inches(2.15), Inches(2.8), Inches(0.5),
-             "Invoice Line Items", font_size=22, color=WHITE, bold=True)
+             "Status Progress Tracker", font_size=22, color=WHITE, bold=True)
 add_text_box(slide, Inches(5.0), Inches(3.0), Inches(3.3), Inches(1.5),
-             "As a sales rep, I want to add line "
-             "items to an invoice with product, "
-             "quantity, and unit price, and have "
-             "the invoice amount auto-calculate "
-             "from the total, so that invoices "
-             "are always accurate.",
+             "As an account manager, I want to see a "
+             "visual progress tracker on the "
+             "Invoice page showing Draft \u2192 Sent "
+             "\u2192 Paid with the current step "
+             "highlighted, so I can instantly "
+             "understand where each invoice is "
+             "in its lifecycle.",
              font_size=16, color=MID_GRAY)
 
 # Card 3
@@ -222,14 +223,14 @@ add_card(slide, Inches(8.9), Inches(2.0), Inches(3.9), Inches(4.5))
 add_text_box(slide, Inches(9.2), Inches(2.1), Inches(3.3), Inches(0.5),
              "C", font_size=32, color=ACCENT_PURPLE, bold=True)
 add_text_box(slide, Inches(9.7), Inches(2.15), Inches(2.8), Inches(0.5),
-             "Invoice Dashboard", font_size=22, color=WHITE, bold=True)
+             "Quick Mark as Paid", font_size=22, color=WHITE, bold=True)
 add_text_box(slide, Inches(9.2), Inches(3.0), Inches(3.3), Inches(1.5),
-             "As an account manager, I want to "
-             "see a dashboard on the Account page "
-             "showing invoice counts by status, "
-             "total outstanding amount, and recent "
-             "invoices, so I can assess a customer's "
-             "financial health at a glance.",
+             "As an account manager, I want a "
+             "\"Mark as Paid\" button on the "
+             "Invoice page that opens a confirm "
+             "modal and sets Status to Paid plus "
+             "today's Paid Date, so I can close "
+             "out paid invoices in one click.",
              font_size=16, color=MID_GRAY)
 
 

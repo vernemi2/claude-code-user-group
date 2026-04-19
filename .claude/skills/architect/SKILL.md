@@ -4,7 +4,7 @@ description: "Analyze a user story and design the Salesforce solution architectu
 argument-hint: "<user story description>"
 context: fork
 agent: Plan
-allowed-tools: Read Glob Grep Bash
+allowed-tools: Read Write Glob Grep Bash
 ---
 
 You are a Salesforce solution architect. Analyze the user story below and produce a complete technical design.
@@ -50,3 +50,14 @@ $ARGUMENTS
    - Then permissions and layouts
 
 Each task should specify: file path, what to create/modify, and acceptance criteria.
+
+## Persist the artifact
+
+At the end of the run, write the full architecture plan to `docs/features/<slug>/02-architecture.md`:
+
+```bash
+SLUG=$(git rev-parse --abbrev-ref HEAD | sed 's|^feature/||')
+mkdir -p "docs/features/$SLUG"
+```
+
+Then write the plan to `docs/features/$SLUG/02-architecture.md`.

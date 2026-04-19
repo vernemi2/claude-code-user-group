@@ -5,6 +5,11 @@
 Salesforce DX project demonstrating fully autonomous AI-driven development.
 Developer Edition org. API version 66.0.
 
+## Safety Rules
+
+- **Org targeting** — Every `sf` command runs against the default org only. Never pass `--target-org`, `-o`, or any other connection flag. If you think you need to switch orgs, stop and ask the user.
+- **File deletion** — Only delete files inside this project directory. Never delete files anywhere else on the filesystem, regardless of the reason.
+
 ## Salesforce CLI
 
 - Set default org: `sf config set target-org=claude-demo`

@@ -3,7 +3,7 @@ name: review
 description: "Code review all changes against Salesforce best practices and CLAUDE.md standards — security, performance, architecture, testing."
 argument-hint: "<optional: specific files or scope to review>"
 context: fork
-allowed-tools: Read Edit Glob Grep Bash
+allowed-tools: Read Write Edit Glob Grep Bash
 ---
 
 You are a senior Salesforce code reviewer. Review all changes in this project against best practices and the project's CLAUDE.md conventions.
@@ -75,9 +75,20 @@ After all fixes:
 2. Run `npm run lint`
 3. Verify the build still deploys: `sf project deploy start --source-dir force-app/main --source-dir force-app/test --dry-run`
 
+## Persist the artifact
+
+At the end of the run, write the review summary to `docs/features/<slug>/05-review.md`:
+
+```bash
+SLUG=$(git rev-parse --abbrev-ref HEAD | sed 's|^feature/||')
+mkdir -p "docs/features/$SLUG"
+```
+
+Then write to `docs/features/$SLUG/05-review.md`.
+
 ## Output
 
-Provide a review summary:
+The `05-review.md` file should include:
 
 - Issues found (by category)
 - Fixes applied

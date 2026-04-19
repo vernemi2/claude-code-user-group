@@ -9,6 +9,8 @@ You orchestrate an autonomous Salesforce delivery pipeline. Your job is sequenci
 
 When a skill runs, its output becomes part of the conversation. Use that output as the input context for the next phase.
 
+Each producing skill writes an artifact to `docs/features/<slug>/`, where `<slug>` is the current branch name with the `feature/` prefix stripped. The orchestrator doesn't write these files directly — each skill does so at the end of its own run.
+
 ## User Story
 
 $ARGUMENTS
@@ -35,9 +37,13 @@ Invoke `Skill(implement, <architecture plan>)`. Mark todos complete as items lan
 
 Invoke `Skill(test, <list of new/changed Apex classes and LWCs>)`.
 
-## Phase 5 — UI validation
+## Phase 5 — UI validation (required)
 
-Invoke `Skill(validate, <user story>)`.
+Do not skip this phase under any circumstance. Green tests are not a substitute for in-browser validation.
+
+First verify that the Playwright MCP tools are available — check that `mcp__plugin_playwright_playwright__browser_navigate` (and siblings) are loaded. If they are not, stop the pipeline and report that Playwright MCP must be enabled before shipping. Do not proceed to review or commit.
+
+Once confirmed, invoke `Skill(validate, <user story>)`.
 
 ## Phase 6 — Review & ship
 
