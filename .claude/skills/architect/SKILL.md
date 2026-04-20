@@ -3,7 +3,6 @@ name: architect
 description: "Analyze a user story and design the Salesforce solution architecture — data model, Apex layers, LWC components, and implementation plan."
 argument-hint: "<user story description>"
 context: fork
-agent: Plan
 allowed-tools: Read Write Glob Grep Bash
 ---
 

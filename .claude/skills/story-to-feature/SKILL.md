@@ -11,6 +11,12 @@ When a skill runs, its output becomes part of the conversation. Use that output 
 
 Each producing skill writes an artifact to `docs/features/<slug>/`, where `<slug>` is the current branch name with the `feature/` prefix stripped. The orchestrator doesn't write these files directly — each skill does so at the end of its own run.
 
+## Staying on track
+
+**Before starting Phase 0, create a TodoWrite list with all seven phases (0–6)**. Mark each one `in_progress` when you start it and `completed` only after its sub-skill returns. This is your anchor — long phases (especially Phase 4 testing with self-heal cycles) produce lots of output and it is easy to lose momentum and stop early. As long as there are uncompleted todos, you are not done. Do not summarize or wrap up until Phase 6 is marked `completed`.
+
+After each phase's sub-skill returns, your very next action is to start the next phase. A successful test run is not the end of the pipeline — it is the midpoint. Shipping requires validation, review, and commit/push/PR.
+
 ## User Story
 
 $ARGUMENTS
@@ -39,11 +45,7 @@ Invoke `Skill(test, <list of new/changed Apex classes and LWCs>)`.
 
 ## Phase 5 — UI validation (required)
 
-Do not skip this phase under any circumstance. Green tests are not a substitute for in-browser validation.
-
-First verify that the Playwright MCP tools are available — check that `mcp__plugin_playwright_playwright__browser_navigate` (and siblings) are loaded. If they are not, stop the pipeline and report that Playwright MCP must be enabled before shipping. Do not proceed to review or commit.
-
-Once confirmed, invoke `Skill(validate, <user story>)`.
+Green tests are not a substitute for in-browser validation. Invoke `Skill(validate, <user story>)`.
 
 ## Phase 6 — Review & ship
 
