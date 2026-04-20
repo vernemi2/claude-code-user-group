@@ -1,4 +1,20 @@
 {
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:soql.beyondthecloud.dev)",
+      "WebFetch(domain:dml.beyondthecloud.dev)",
+      "Bash(gh api:*)",
+      "Bash(npm run:*)",
+      "Bash(sf project:*)",
+      "Bash(sf apex:*)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_wait_for",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot"
+    ]
+  },
   "hooks": {
     "PostToolUse": [
       {
