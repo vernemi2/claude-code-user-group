@@ -2,6 +2,7 @@
 name: test
 description: "Write Apex and LWC tests, deploy to org, run tests, and self-heal on failures (max 3 iterations)."
 argument-hint: "<optional: specific classes or components to test>"
+context: fork
 allowed-tools: Read Write Edit Glob Grep Bash TodoWrite
 ---
 
