@@ -1,0 +1,11 @@
+<template>
+  <template lwc:if={isVisible}>
+    <span role="status" aria-label={ariaLabel}>
+      <lightning-badge
+        class={badgeClass}
+        label={chipLabel}
+        variant={chipVariant}
+      ></lightning-badge>
+    </span>
+  </template>
+</template>

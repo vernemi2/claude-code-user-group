@@ -1,0 +1,25 @@
+:host {
+  display: inline-block;
+  margin: 0.25rem 0 0.75rem 0;
+}
+
+.invoice-due-chip_success {
+  --slds-c-badge-color-background: #2e844a;
+  --slds-c-badge-text-color: #ffffff;
+  --sds-c-badge-color-background: #2e844a;
+  --sds-c-badge-text-color: #ffffff;
+}
+
+.invoice-due-chip_warning {
+  --slds-c-badge-color-background: #fe9339;
+  --slds-c-badge-text-color: #080707;
+  --sds-c-badge-color-background: #fe9339;
+  --sds-c-badge-text-color: #080707;
+}
+
+.invoice-due-chip_error {
+  --slds-c-badge-color-background: #ea001e;
+  --slds-c-badge-text-color: #ffffff;
+  --sds-c-badge-color-background: #ea001e;
+  --sds-c-badge-text-color: #ffffff;
+}
