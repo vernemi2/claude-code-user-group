@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/metadata">
+    <fullName>Payment_Terms__c</fullName>
+    <description
+  >Default payment terms for invoices issued to this Account. Used to auto-calculate each new Invoice's Due Date from its Invoice Date.</description>
+    <inlineHelpText
+  >Controls how the Due Date is auto-calculated for new Invoices on this Account. Defaults to Net 30.</inlineHelpText>
+    <label>Payment Terms</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Due on Receipt</fullName>
+                <default>false</default>
+                <label>Due on Receipt</label>
+            </value>
+            <value>
+                <fullName>Net 15</fullName>
+                <default>false</default>
+                <label>Net 15</label>
+            </value>
+            <value>
+                <fullName>Net 30</fullName>
+                <default>true</default>
+                <label>Net 30</label>
+            </value>
+            <value>
+                <fullName>Net 45</fullName>
+                <default>false</default>
+                <label>Net 45</label>
+            </value>
+            <value>
+                <fullName>Net 60</fullName>
+                <default>false</default>
+                <label>Net 60</label>
+            </value>
+            <value>
+                <fullName>Net 90</fullName>
+                <default>false</default>
+                <label>Net 90</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

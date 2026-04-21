@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/metadata">
+    <fullName>Invoice_Date__c</fullName>
+    <defaultValue>TODAY()</defaultValue>
+    <description
+  >Date the invoice was issued. Used as the anchor for calculating the Due Date based on the related Account's Payment Terms. Defaults to today.</description>
+    <inlineHelpText
+  >The date this invoice was issued. Drives the auto-calculated Due Date.</inlineHelpText>
+    <label>Invoice Date</label>
+    <required>true</required>
+    <type>Date</type>
+</CustomField>

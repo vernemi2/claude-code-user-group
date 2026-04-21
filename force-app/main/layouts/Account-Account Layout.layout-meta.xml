@@ -73,6 +73,10 @@
                 <behavior>Edit</behavior>
                 <field>Sic</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Payment_Terms__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
