@@ -21,6 +21,11 @@
     </objectPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Payment_Terms__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Invoice__c.Account__c</field>
         <readable>true</readable>
     </fieldPermissions>

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/metadata">
     <fullName>Due_Date__c</fullName>
+    <description
+  >Date by which the invoice must be paid. Auto-populated on insert from Invoice Date and the related Account's Payment Terms when left blank; a user-supplied value is preserved.</description>
+    <inlineHelpText
+  >Leave blank to auto-calculate from the Account's Payment Terms.</inlineHelpText>
     <label>Due Date</label>
-    <required>true</required>
+    <required>false</required>
     <type>Date</type>
 </CustomField>
