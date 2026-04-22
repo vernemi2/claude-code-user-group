@@ -391,6 +391,77 @@ private class PaymentServiceTest {
   }
 
   @IsTest
+  static void shouldReturnPaymentTotalsByInvoice() {
+    Id invoiceA = SOQL.IdGenerator.get(Invoice__c.SObjectType);
+    Id invoiceB = SOQL.IdGenerator.get(Invoice__c.SObjectType);
+    SOQL.mock('PaymentService.getPaymentTotals')
+      .thenReturn(
+        new List<Map<String, Object>>{
+          new Map<String, Object>{
+            'Invoice__c' => invoiceA,
+            'totalAmount' => 400.00
+          },
+          new Map<String, Object>{
+            'Invoice__c' => invoiceB,
+            'totalAmount' => 750.00
+          }
+        }
+      );
+
+    PaymentService service = new PaymentService();
+
+    Test.startTest();
+    Map<Id, Decimal> totals = service.getPaymentTotals(
+      new Set<Id>{ invoiceA, invoiceB }
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      2,
+      totals.size(),
+      'Should return totals for both invoice ids'
+    );
+    Assert.areEqual(
+      400.00,
+      totals.get(invoiceA),
+      'Invoice A total should match aggregate'
+    );
+    Assert.areEqual(
+      750.00,
+      totals.get(invoiceB),
+      'Invoice B total should match aggregate'
+    );
+  }
+
+  @IsTest
+  static void shouldReturnZeroTotalWhenAggregateSumIsNull() {
+    Id invoiceId = SOQL.IdGenerator.get(Invoice__c.SObjectType);
+    SOQL.mock('PaymentService.getPaymentTotals')
+      .thenReturn(
+        new List<Map<String, Object>>{
+          new Map<String, Object>{
+            'Invoice__c' => invoiceId,
+            'totalAmount' => null
+          }
+        }
+      );
+
+    PaymentService service = new PaymentService();
+
+    Test.startTest();
+    Map<Id, Decimal> totals = service.getPaymentTotals(
+      new Set<Id>{ invoiceId }
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      0,
+      totals.get(invoiceId),
+      'Null aggregate sum should be coerced to zero'
+    );
+  }
+
+  @IsTest
   static void shouldHandleBulkPaymentValidation() {
     List<Id> invoiceIds = new List<Id>();
     List<Invoice__c> invoices = new List<Invoice__c>();
