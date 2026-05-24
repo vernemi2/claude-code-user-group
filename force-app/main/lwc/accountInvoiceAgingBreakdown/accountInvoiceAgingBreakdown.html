@@ -1,0 +1,60 @@
+<template>
+  <lightning-card title="Invoice Aging" icon-name="standard:invoice">
+    <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+      <template lwc:if={isLoading}>
+        <div class="slds-is-relative slds-p-vertical_medium">
+          <lightning-spinner
+            alternative-text="Loading aging breakdown"
+            size="small"
+          ></lightning-spinner>
+        </div>
+      </template>
+      <template lwc:elseif={hasError}>
+        <lightning-badge
+          label="Aging breakdown unavailable"
+          icon-name="utility:warning"
+        ></lightning-badge>
+      </template>
+      <template lwc:elseif={isEmpty}>
+        <div class="empty-row" role="status">
+          <lightning-icon
+            icon-name="utility:success"
+            size="x-small"
+            variant="success"
+            alternative-text="No outstanding invoices"
+          ></lightning-icon>
+          <span class="slds-p-left_x-small">No outstanding invoices</span>
+        </div>
+      </template>
+      <template lwc:elseif={showBuckets}>
+        <div class="grid" role="list">
+          <template for:each={buckets} for:item="bucket">
+            <button
+              key={bucket.label}
+              type="button"
+              class={bucket.cssClass}
+              data-bucket-label={bucket.label}
+              aria-label={bucket.ariaLabel}
+              onclick={handleBucketClick}
+              role="listitem"
+            >
+              <span class="tile-accent"></span>
+              <span class="tile-label">
+                <template lwc:if={bucket.hasIcon}>
+                  <lightning-icon
+                    icon-name={bucket.iconName}
+                    size="xx-small"
+                    alternative-text=""
+                  ></lightning-icon>
+                </template>
+                <span>{bucket.label}</span>
+              </span>
+              <span class="tile-amount">{bucket.formattedAmount}</span>
+              <span class="tile-count">{bucket.countLabel}</span>
+            </button>
+          </template>
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>

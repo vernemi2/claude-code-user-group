@@ -306,6 +306,489 @@ private class InvoiceServiceTest {
   }
 
   @IsTest
+  static void shouldReturnEmptyBreakdownWhenAccountIdIsNull() {
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    Integer queriesBefore = Limits.getQueries();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      null
+    );
+    Integer queriesAfter = Limits.getQueries();
+    Test.stopTest();
+
+    Assert.areEqual(
+      queriesBefore,
+      queriesAfter,
+      'Null accountId should short-circuit without SOQL'
+    );
+    Assert.areEqual(
+      5,
+      breakdown.buckets.size(),
+      'Should return five empty buckets'
+    );
+    Assert.areEqual(
+      0,
+      breakdown.totalUnpaidCount,
+      'Total unpaid count should be zero'
+    );
+    Assert.areEqual(
+      0,
+      breakdown.totalUnpaidAmount,
+      'Total unpaid amount should be zero'
+    );
+    paymentMock.assertThat().method('getPaymentTotals').wasNeverCalled();
+  }
+
+  @IsTest
+  static void shouldReturnFiveEmptyBucketsWhenNoInvoicesExistForAccount() {
+    SOQL.mock('InvoiceService.getUnpaidInvoices')
+      .thenReturn(new List<Invoice__c>());
+
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      SOQL.IdGenerator.get(Account.SObjectType)
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      5,
+      breakdown.buckets.size(),
+      'Empty account should return five empty buckets'
+    );
+    Assert.areEqual(
+      'Current',
+      breakdown.buckets[0].label,
+      'First bucket should be Current'
+    );
+    Assert.areEqual(
+      '1-30 days',
+      breakdown.buckets[1].label,
+      'Second bucket should be 1-30 days'
+    );
+    Assert.areEqual(
+      '31-60 days',
+      breakdown.buckets[2].label,
+      'Third bucket should be 31-60 days'
+    );
+    Assert.areEqual(
+      '61-90 days',
+      breakdown.buckets[3].label,
+      'Fourth bucket should be 61-90 days'
+    );
+    Assert.areEqual(
+      '90+ days',
+      breakdown.buckets[4].label,
+      'Fifth bucket should be 90+ days'
+    );
+    for (InvoiceService.AgingBucket bucket : breakdown.buckets) {
+      Assert.areEqual(
+        0,
+        bucket.count,
+        'Empty account bucket count should be zero'
+      );
+      Assert.areEqual(
+        0,
+        bucket.totalAmount,
+        'Empty account bucket total should be zero'
+      );
+    }
+    Assert.areEqual(
+      0,
+      breakdown.totalUnpaidCount,
+      'Total count should be zero'
+    );
+    Assert.areEqual(
+      0,
+      breakdown.totalUnpaidAmount,
+      'Total amount should be zero'
+    );
+  }
+
+  @IsTest
+  static void shouldClassifyDraftInvoicesAsCurrentRegardlessOfDueDate() {
+    Id invoiceId = SOQL.IdGenerator.get(Invoice__c.SObjectType);
+    Invoice__c invoice = new Invoice__c(
+      Id = invoiceId,
+      Amount__c = 500.00,
+      Status__c = 'Draft',
+      Due_Date__c = Date.today().addDays(-120)
+    );
+    SOQL.mock('InvoiceService.getUnpaidInvoices')
+      .thenReturn(new List<Invoice__c>{ invoice });
+
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    paymentMock.when('getPaymentTotals').thenReturn(new Map<Id, Decimal>());
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      SOQL.IdGenerator.get(Account.SObjectType)
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      1,
+      breakdown.buckets[0].count,
+      'Draft invoice should land in Current bucket even if due date is 120 days overdue'
+    );
+    Assert.areEqual(
+      500.00,
+      breakdown.buckets[0].totalAmount,
+      'Current bucket should carry full draft amount'
+    );
+    Assert.areEqual(
+      1,
+      breakdown.totalUnpaidCount,
+      'Draft should still count as unpaid'
+    );
+  }
+
+  @IsTest
+  static void shouldClassifyNullDueDateAsCurrent() {
+    Id invoiceId = SOQL.IdGenerator.get(Invoice__c.SObjectType);
+    Invoice__c invoice = new Invoice__c(
+      Id = invoiceId,
+      Amount__c = 250.00,
+      Status__c = 'Sent',
+      Due_Date__c = null
+    );
+    SOQL.mock('InvoiceService.getUnpaidInvoices')
+      .thenReturn(new List<Invoice__c>{ invoice });
+
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    paymentMock.when('getPaymentTotals').thenReturn(new Map<Id, Decimal>());
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      SOQL.IdGenerator.get(Account.SObjectType)
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      1,
+      breakdown.buckets[0].count,
+      'Null due date should land in Current bucket'
+    );
+    Assert.areEqual(
+      250.00,
+      breakdown.buckets[0].totalAmount,
+      'Current bucket should carry full amount'
+    );
+  }
+
+  @IsTest
+  static void shouldClassifyBoundaryDayValuesIntoCorrectBuckets() {
+    Date today = Date.today();
+    List<Invoice__c> invoices = new List<Invoice__c>();
+    // boundary pairs: dueDate offset -> expected bucket
+    Map<Integer, String> offsetToBucket = new Map<Integer, String>{
+      0 => 'Current',
+      -1 => '1-30 days',
+      -30 => '1-30 days',
+      -31 => '31-60 days',
+      -60 => '31-60 days',
+      -61 => '61-90 days',
+      -90 => '61-90 days',
+      -91 => '90+ days'
+    };
+
+    Map<String, Decimal> expectedAmountsByBucket = new Map<String, Decimal>();
+    Map<String, Integer> expectedCountsByBucket = new Map<String, Integer>();
+
+    for (Integer offset : offsetToBucket.keySet()) {
+      invoices.add(
+        new Invoice__c(
+          Id = SOQL.IdGenerator.get(Invoice__c.SObjectType),
+          Amount__c = 100.00,
+          Status__c = 'Sent',
+          Due_Date__c = today.addDays(offset)
+        )
+      );
+      String expectedBucket = offsetToBucket.get(offset);
+      expectedAmountsByBucket.put(
+        expectedBucket,
+        (expectedAmountsByBucket.containsKey(expectedBucket)
+          ? expectedAmountsByBucket.get(expectedBucket)
+          : 0) + 100.00
+      );
+      expectedCountsByBucket.put(
+        expectedBucket,
+        (expectedCountsByBucket.containsKey(expectedBucket)
+          ? expectedCountsByBucket.get(expectedBucket)
+          : 0) + 1
+      );
+    }
+
+    SOQL.mock('InvoiceService.getUnpaidInvoices').thenReturn(invoices);
+
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    paymentMock.when('getPaymentTotals').thenReturn(new Map<Id, Decimal>());
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      SOQL.IdGenerator.get(Account.SObjectType)
+    );
+    Test.stopTest();
+
+    Map<String, InvoiceService.AgingBucket> bucketByLabel = new Map<String, InvoiceService.AgingBucket>();
+    for (InvoiceService.AgingBucket b : breakdown.buckets) {
+      bucketByLabel.put(b.label, b);
+    }
+
+    for (String label : expectedCountsByBucket.keySet()) {
+      Assert.areEqual(
+        expectedCountsByBucket.get(label),
+        bucketByLabel.get(label).count,
+        'Bucket ' +
+          label +
+          ' should have expected count for boundary day values'
+      );
+      Assert.areEqual(
+        expectedAmountsByBucket.get(label),
+        bucketByLabel.get(label).totalAmount,
+        'Bucket ' +
+          label +
+          ' should have expected amount for boundary day values'
+      );
+    }
+    Assert.areEqual(
+      8,
+      breakdown.totalUnpaidCount,
+      'All eight boundary invoices should be counted'
+    );
+    Assert.areEqual(
+      800.00,
+      breakdown.totalUnpaidAmount,
+      'Total amount should sum all eight invoices'
+    );
+  }
+
+  @IsTest
+  static void shouldUseRemainingBalanceWhenPartialPaymentsExist() {
+    Id invoiceId = SOQL.IdGenerator.get(Invoice__c.SObjectType);
+    Invoice__c invoice = new Invoice__c(
+      Id = invoiceId,
+      Amount__c = 1000.00,
+      Status__c = 'Sent',
+      Due_Date__c = Date.today().addDays(-10)
+    );
+    SOQL.mock('InvoiceService.getUnpaidInvoices')
+      .thenReturn(new List<Invoice__c>{ invoice });
+
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    paymentMock.when('getPaymentTotals')
+      .thenReturn(new Map<Id, Decimal>{ invoiceId => 300.00 });
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      SOQL.IdGenerator.get(Account.SObjectType)
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      1,
+      breakdown.buckets[1].count,
+      '10-day overdue invoice should land in 1-30 days bucket'
+    );
+    Assert.areEqual(
+      700.00,
+      breakdown.buckets[1].totalAmount,
+      'Bucket amount should reflect remaining balance after partial payment'
+    );
+    Assert.areEqual(
+      700.00,
+      breakdown.totalUnpaidAmount,
+      'Total unpaid amount should reflect remaining balance'
+    );
+  }
+
+  @IsTest
+  static void shouldExcludeFullyPaidInvoicesFromBreakdown() {
+    Id invoiceId = SOQL.IdGenerator.get(Invoice__c.SObjectType);
+    Invoice__c invoice = new Invoice__c(
+      Id = invoiceId,
+      Amount__c = 500.00,
+      Status__c = 'Sent',
+      Due_Date__c = Date.today().addDays(-5)
+    );
+    SOQL.mock('InvoiceService.getUnpaidInvoices')
+      .thenReturn(new List<Invoice__c>{ invoice });
+
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    paymentMock.when('getPaymentTotals')
+      .thenReturn(new Map<Id, Decimal>{ invoiceId => 500.00 });
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      SOQL.IdGenerator.get(Account.SObjectType)
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      0,
+      breakdown.totalUnpaidCount,
+      'Fully paid invoice should be excluded'
+    );
+    Assert.areEqual(
+      0,
+      breakdown.totalUnpaidAmount,
+      'Fully paid invoice amount should be excluded'
+    );
+    for (InvoiceService.AgingBucket bucket : breakdown.buckets) {
+      Assert.areEqual(
+        0,
+        bucket.count,
+        'No bucket should contain fully paid invoices'
+      );
+    }
+  }
+
+  @IsTest
+  static void shouldHandleNullInvoiceAmountGracefully() {
+    Id invoiceId = SOQL.IdGenerator.get(Invoice__c.SObjectType);
+    Invoice__c invoice = new Invoice__c(
+      Id = invoiceId,
+      Amount__c = null,
+      Status__c = 'Sent',
+      Due_Date__c = Date.today().addDays(-5)
+    );
+    SOQL.mock('InvoiceService.getUnpaidInvoices')
+      .thenReturn(new List<Invoice__c>{ invoice });
+
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    paymentMock.when('getPaymentTotals').thenReturn(new Map<Id, Decimal>());
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      SOQL.IdGenerator.get(Account.SObjectType)
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      0,
+      breakdown.totalUnpaidCount,
+      'Null amount invoice (zero remaining) should be excluded'
+    );
+  }
+
+  @IsTest
+  static void shouldAssignCorrectSeverityToEachBucket() {
+    SOQL.mock('InvoiceService.getUnpaidInvoices')
+      .thenReturn(new List<Invoice__c>());
+
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      SOQL.IdGenerator.get(Account.SObjectType)
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      'current',
+      breakdown.buckets[0].severity,
+      'Current bucket should have current severity'
+    );
+    Assert.areEqual(
+      'low',
+      breakdown.buckets[1].severity,
+      '1-30 bucket should have low severity'
+    );
+    Assert.areEqual(
+      'medium',
+      breakdown.buckets[2].severity,
+      '31-60 bucket should have medium severity'
+    );
+    Assert.areEqual(
+      'high',
+      breakdown.buckets[3].severity,
+      '61-90 bucket should have high severity'
+    );
+    Assert.areEqual(
+      'critical',
+      breakdown.buckets[4].severity,
+      '90+ bucket should have critical severity'
+    );
+  }
+
+  @IsTest
+  static void shouldBulkAggregateManyUnpaidInvoices() {
+    Id accountId = SOQL.IdGenerator.get(Account.SObjectType);
+    Date today = Date.today();
+    List<Invoice__c> invoices = new List<Invoice__c>();
+    Map<Id, Decimal> payments = new Map<Id, Decimal>();
+    for (Integer i = 0; i < 200; i++) {
+      Id invoiceId = SOQL.IdGenerator.get(Invoice__c.SObjectType);
+      invoices.add(
+        new Invoice__c(
+          Id = invoiceId,
+          Amount__c = 100.00,
+          Status__c = 'Sent',
+          Due_Date__c = today.addDays(-15)
+        )
+      );
+    }
+    SOQL.mock('InvoiceService.getUnpaidInvoices').thenReturn(invoices);
+
+    UniversalMocker paymentMock = UniversalMocker.mock(PaymentService.class);
+    paymentMock.when('getPaymentTotals').thenReturn(payments);
+    InstanceProvider.injectMock(PaymentService.class, paymentMock.createStub());
+
+    InvoiceService service = new InvoiceService();
+
+    Test.startTest();
+    InvoiceService.InvoiceAgingBreakdown breakdown = service.getAgingBreakdown(
+      accountId
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      200,
+      breakdown.totalUnpaidCount,
+      'Should aggregate 200 invoices'
+    );
+    Assert.areEqual(
+      200,
+      breakdown.buckets[1].count,
+      'All 200 should land in 1-30 days bucket'
+    );
+    Assert.areEqual(
+      20000.00,
+      breakdown.totalUnpaidAmount,
+      'Total should sum all 200 amounts'
+    );
+  }
+
+  @IsTest
   static void shouldBulkProcess200InvoicesInOneQuery() {
     Id accountId = SOQL.IdGenerator.get(Account.SObjectType);
     SOQL.mock('InvoiceService.getPaymentTerms')

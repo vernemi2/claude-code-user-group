@@ -22,6 +22,14 @@ public inherited sharing class SOQL_Invoice extends SOQL implements SOQL.Selecto
     return this;
   }
 
+  public SOQL_Invoice unpaid() {
+    whereAre(
+      SOQL.Filter.with(Invoice__c.Status__c)
+        .notIn(new List<String>{ 'Paid', 'Cancelled' })
+    );
+    return this;
+  }
+
   public SOQL_Invoice overdue() {
     whereAre(
       SOQL.FilterGroup

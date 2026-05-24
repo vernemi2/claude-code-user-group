@@ -145,7 +145,7 @@ public with sharing class PaymentService {
     }
   }
 
-  private Map<Id, Decimal> getPaymentTotals(Set<Id> invoiceIds) {
+  public Map<Id, Decimal> getPaymentTotals(Set<Id> invoiceIds) {
     Map<Id, Decimal> totals = new Map<Id, Decimal>();
     List<SOQL.AggregateResultProxy> results = SOQL.of(Payment__c.SObjectType)
       .with(Payment__c.Invoice__c)

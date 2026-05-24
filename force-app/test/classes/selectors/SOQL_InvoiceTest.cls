@@ -49,6 +49,51 @@ private class SOQL_InvoiceTest {
   }
 
   @IsTest
+  static void shouldFilterUnpaid() {
+    List<Invoice__c> mockInvoices = new List<Invoice__c>{
+      new Invoice__c(Amount__c = 100.00, Status__c = 'Sent'),
+      new Invoice__c(Amount__c = 200.00, Status__c = 'Draft')
+    };
+    SOQL.mock('SOQL_InvoiceTest.unpaid').thenReturn(mockInvoices);
+
+    Test.startTest();
+    List<Invoice__c> results = SOQL_Invoice.query()
+      .unpaid()
+      .mockId('SOQL_InvoiceTest.unpaid')
+      .toList();
+    Test.stopTest();
+
+    Assert.areEqual(2, results.size(), 'Should return unpaid invoices');
+  }
+
+  @IsTest
+  static void shouldChainUnpaidWithAccountFilter() {
+    Id accountId = SOQL.IdGenerator.get(Account.SObjectType);
+    List<Invoice__c> mockInvoices = new List<Invoice__c>{
+      new Invoice__c(
+        Account__c = accountId,
+        Amount__c = 300.00,
+        Status__c = 'Sent'
+      )
+    };
+    SOQL.mock('SOQL_InvoiceTest.unpaidByAccount').thenReturn(mockInvoices);
+
+    Test.startTest();
+    List<Invoice__c> results = SOQL_Invoice.query()
+      .unpaid()
+      .byAccountId(accountId)
+      .mockId('SOQL_InvoiceTest.unpaidByAccount')
+      .toList();
+    Test.stopTest();
+
+    Assert.areEqual(
+      1,
+      results.size(),
+      'Should return chained unpaid + account filter results'
+    );
+  }
+
+  @IsTest
   static void shouldChainFilters() {
     Id accountId = SOQL.IdGenerator.get(Account.SObjectType);
     List<Invoice__c> mockInvoices = new List<Invoice__c>{

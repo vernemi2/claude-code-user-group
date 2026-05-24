@@ -23,6 +23,12 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
+                <componentName>c:accountInvoiceAgingBreakdown</componentName>
+                <identifier>c_accountInvoiceAgingBreakdown</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentName>force:detailPanel</componentName>
                 <identifier>force_detailPanel</identifier>
             </componentInstance>
