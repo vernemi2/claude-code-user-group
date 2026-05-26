@@ -17,6 +17,12 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>c:accountOutstandingBalanceTile</componentName>
+                <identifier>c_accountOutstandingBalanceTile</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentName>c:accountOverdueInvoiceBadge</componentName>
                 <identifier>c_accountOverdueInvoiceBadge</identifier>
             </componentInstance>

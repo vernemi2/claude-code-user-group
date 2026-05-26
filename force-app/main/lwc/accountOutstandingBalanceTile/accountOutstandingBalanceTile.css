@@ -1,0 +1,33 @@
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.tile:focus {
+  outline: none;
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--lwc-colorBrand, #1589ee);
+  outline-offset: 2px;
+}
+
+.tile-amount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--lwc-colorTextDefault, #080707);
+}
+
+.tile-count {
+  font-size: 0.875rem;
+  color: var(--lwc-colorTextWeak, #706e6b);
+}
