@@ -1,0 +1,31 @@
+<template>
+  <lightning-card title="Outstanding Balance" icon-name="standard:currency">
+    <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+      <template lwc:if={isLoading}>
+        <div class="slds-is-relative slds-p-vertical_medium">
+          <lightning-spinner
+            alternative-text="Loading outstanding balance"
+            size="small"
+          ></lightning-spinner>
+        </div>
+      </template>
+      <template lwc:elseif={hasError}>
+        <lightning-badge
+          label="Outstanding balance unavailable"
+          icon-name="utility:warning"
+        ></lightning-badge>
+      </template>
+      <template lwc:elseif={hasData}>
+        <button
+          type="button"
+          class="tile"
+          aria-label={ariaLabel}
+          onclick={handleNavigate}
+        >
+          <span class="tile-amount">{formattedAmount}</span>
+          <span class="tile-count">{countLabel}</span>
+        </button>
+      </template>
+    </div>
+  </lightning-card>
+</template>
