@@ -1,0 +1,162 @@
+:host {
+  display: block;
+  min-height: 4rem;
+  margin: 0.25rem 0 0.75rem 0;
+}
+
+.lifecycle-tracker {
+  position: relative;
+  display: block;
+  min-height: 4rem;
+}
+
+.lifecycle-tracker__rail {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  z-index: 1;
+}
+
+.lifecycle-tracker__connectors {
+  position: absolute;
+  top: 0.875rem;
+  left: 1.75rem;
+  right: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  z-index: 0;
+}
+
+.lifecycle-step-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: 8rem;
+}
+
+.lifecycle-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  background: #dddbda;
+  color: #747474;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.lifecycle-step__index {
+  display: inline-block;
+}
+
+.lifecycle-step__label {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #444444;
+  text-align: center;
+  max-width: 7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lifecycle-step_completed {
+  background: #2e844a;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.lifecycle-step_current {
+  background: #2e844a;
+  color: #ffffff;
+  border-color: #0176d3;
+}
+
+.lifecycle-step_current-error {
+  background: #ea001e;
+  color: #ffffff;
+  border-color: #0176d3;
+}
+
+.lifecycle-step_upcoming {
+  background: #dddbda;
+  color: #747474;
+  border-color: transparent;
+}
+
+.lifecycle-step_muted {
+  background: #dddbda;
+  color: #747474;
+  border-color: transparent;
+  opacity: 0.6;
+}
+
+.lifecycle-connector {
+  flex: 1 1 auto;
+  height: 2px;
+  background: #dddbda;
+  display: inline-block;
+}
+
+.lifecycle-connector_completed {
+  background: #2e844a;
+}
+
+.lifecycle-connector_upcoming {
+  background: #dddbda;
+}
+
+.lifecycle-connector_muted {
+  background: #dddbda;
+  opacity: 0.6;
+}
+
+.lifecycle-cancelled-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #3e3e3c;
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.lifecycle-tracker_skeleton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 4rem;
+}
+
+.lifecycle-step_skeleton {
+  display: inline-block;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: #dddbda;
+  flex-shrink: 0;
+}
+
+.lifecycle-connector_skeleton {
+  flex: 1 1 auto;
+  height: 2px;
+  background: #dddbda;
+  display: inline-block;
+}
