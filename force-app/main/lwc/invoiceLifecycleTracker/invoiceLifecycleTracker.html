@@ -1,0 +1,55 @@
+<template>
+  <template lwc:if={isLoading}>
+    <div
+      class="lifecycle-tracker lifecycle-tracker_skeleton"
+      aria-hidden="true"
+    >
+      <span class="lifecycle-step lifecycle-step_skeleton"></span>
+      <span class="lifecycle-connector lifecycle-connector_skeleton"></span>
+      <span class="lifecycle-step lifecycle-step_skeleton"></span>
+      <span class="lifecycle-connector lifecycle-connector_skeleton"></span>
+      <span class="lifecycle-step lifecycle-step_skeleton"></span>
+    </div>
+  </template>
+  <template lwc:elseif={hasError}></template>
+  <template lwc:else>
+    <div role="group" aria-label={groupAriaLabel} class="lifecycle-tracker">
+      <div class="lifecycle-tracker__rail">
+        <template for:each={steps} for:item="step">
+          <div
+            key={step.key}
+            class="lifecycle-step-wrapper"
+            data-step-position={step.position}
+          >
+            <span
+              class={step.classes}
+              aria-current={step.ariaCurrent}
+              title={step.label}
+              data-step={step.key}
+            >
+              <span class="lifecycle-step__index">{step.position}</span>
+              <span class="slds-assistive-text">{step.srLabel}</span>
+            </span>
+            <span class="lifecycle-step__label" title={step.label}
+              >{step.label}</span
+            >
+          </div>
+        </template>
+      </div>
+      <div class="lifecycle-tracker__connectors" aria-hidden="true">
+        <template for:each={connectors} for:item="connector">
+          <span
+            key={connector.key}
+            class={connector.classes}
+            data-connector={connector.key}
+          ></span>
+        </template>
+      </div>
+      <template lwc:if={showCancelledOverlay}>
+        <span class="lifecycle-cancelled-overlay" aria-label="Cancelled"
+          >Cancelled</span
+        >
+      </template>
+    </div>
+  </template>
+</template>

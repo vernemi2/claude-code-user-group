@@ -17,6 +17,12 @@
                 <identifier>c_invoiceDueChip</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:invoiceLifecycleTracker</componentName>
+                <identifier>c_invoiceLifecycleTracker</identifier>
+            </componentInstance>
+        </itemInstances>
         <name>header</name>
         <type>Region</type>
     </flexiPageRegions>
